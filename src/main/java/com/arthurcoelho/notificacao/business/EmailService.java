@@ -37,7 +37,8 @@ public class EmailService {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true,
                                                                 StandardCharsets.UTF_8.name());
             helper.setFrom(new InternetAddress(remetente, nomeRemetente));
-            helper.setTo(InternetAddress.parse(dto.getEmailUsuario()));
+            //helper.setTo(InternetAddress.parse(dto.getEmailUsuario()));
+            helper.setTo("arthurteste2605@gmail.com");
             helper.setSubject("notificação de tarefa");
 
             Context context = new Context();
@@ -46,7 +47,13 @@ public class EmailService {
             context.setVariable("descricao", dto.getDescricaoTarefa());
             String template = templateEngine.process("notificacao", context);
             helper.setText(template, true);
+
+            System.out.println("EMAIL DESTINO: " + dto.getEmailUsuario());
+            System.out.println("ENVIANDO EMAIL...");
+
             javamailSender.send(mimeMessage);
+
+            System.out.println("EMAIL ENVIADO COM SUCESSO");
 
         }catch (MessagingException | UnsupportedEncodingException e){
             throw new EmailException("Erro ao enviar e-mail", e.getCause());
